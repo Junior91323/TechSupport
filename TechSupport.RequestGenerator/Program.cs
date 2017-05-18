@@ -18,12 +18,15 @@ namespace TechSupport.RequestGenerator
         static HttpClient client = new HttpClient();
         static void Main(string[] args)
         {
-            client.BaseAddress = new Uri("http://localhost:55268/");
+            client.BaseAddress = new Uri("http://localhost:50740/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            IKernel kernal = new StandardKernel(new ServiceModule("DefaultConnection"));
-            IUnitOfService DB = kernal.Get<UnitOfService>();
-            var p = DB.EmployeeService.GetEmployees().ToList();
+
+            //IKernel kernal = new StandardKernel(new ServiceModule("DefaultConnection"));
+            //IUnitOfService DB = kernal.Get<UnitOfService>();
+            //var p = DB.EmployeeService.GetEmployees().ToList();
+
+             GetProductAsync("api/request").Wait();
         }
         static async Task<Uri> CreateProductAsync(object product)
         {
@@ -32,6 +35,16 @@ namespace TechSupport.RequestGenerator
 
             // Return the URI of the created resource.
             return response.Headers.Location;
+        }
+        static async Task<object> GetProductAsync(string path)
+        {
+            object product = null;
+            HttpResponseMessage response = await client.GetAsync(path);
+            if (response.IsSuccessStatusCode)
+            {
+                product = await response.Content.ReadAsAsync<object>();
+            }
+            return product;
         }
     }
 }
