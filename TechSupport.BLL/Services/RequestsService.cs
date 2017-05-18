@@ -87,7 +87,7 @@ namespace TechSupport.BLL.Services
             try
             {
                 Mapper.Initialize(cfg => cfg.CreateMap<Request, RequestDTO>());
-                return Mapper.Map<IEnumerable<Request>, List<RequestDTO>>(DB.Requests.GetAll().OrderByDescending(x => x.CreatedDate));
+                return Mapper.Map<IEnumerable<Request>, List<RequestDTO>>(DB.Requests.GetAll().OrderByDescending(x => x.CreatedDate).ToList());
             }
             catch (Exception ex)
             {

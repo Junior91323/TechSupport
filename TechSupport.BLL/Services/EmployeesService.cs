@@ -84,9 +84,8 @@ namespace TechSupport.BLL.Services
         {
             try
             {
-
-                Mapper.Initialize(cfg => { cfg.CreateMap<Employee, EmployeeDTO>(); cfg.CreateMap<Request, RequestDTO>(); });
-                return Mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(DB.Employees.GetAll().OrderBy(x => x.Name));
+                Mapper.Initialize(cfg => { cfg.CreateMap<Employee, EmployeeDTO>().ForMember("Position", opt => opt.MapFrom(src => src.Position.Title)); cfg.CreateMap<Request, RequestDTO>(); });
+                return Mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(DB.Employees.GetAll().OrderBy(x => x.Name).ToList());
             }
             catch (Exception ex)
             {

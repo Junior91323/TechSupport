@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechSupport.DAL", "TechSupp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechSupport.BLL", "TechSupport.BLL\TechSupport.BLL.csproj", "{59D3FAA0-3722-4853-A51F-860D467931C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechSupport.RequestGenerator", "TechSupport.RequestGenerator\TechSupport.RequestGenerator.csproj", "{9E6BA281-D739-483F-9441-FC53BFDE76EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{59D3FAA0-3722-4853-A51F-860D467931C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59D3FAA0-3722-4853-A51F-860D467931C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59D3FAA0-3722-4853-A51F-860D467931C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E6BA281-D739-483F-9441-FC53BFDE76EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6BA281-D739-483F-9441-FC53BFDE76EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6BA281-D739-483F-9441-FC53BFDE76EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6BA281-D739-483F-9441-FC53BFDE76EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
