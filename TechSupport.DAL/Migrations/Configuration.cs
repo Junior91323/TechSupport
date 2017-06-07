@@ -24,8 +24,8 @@ namespace TechSupport.DAL.Migrations
             //context.RequestState.AddRange(new List<RequestState> {
             //    new RequestState { Title= "processing"},
             //    new RequestState { Title= "new"},
-            //    new RequestState { Title= "completed"}
-
+            //    new RequestState { Title= "completed"},
+            //    new RequestState { Title = "canceled" }
             //});
 
             //Position _operator = new Position() { Title = "Operator", WaitingTimeSec = 10 };

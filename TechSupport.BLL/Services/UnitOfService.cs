@@ -38,18 +38,18 @@ namespace TechSupport.BLL.Services
 
                 return _RequestService;
             }
-        }
+        }//Request service is an agregator 
 
         public UnitOfService(IUnitOfWork uow)
         {
             this.DB = uow;
-            this.requestObserver = new RequestsObserver(DB);
+            this.requestObserver = new RequestsObserver(DB);//Create new observer
 
             //if (EmployeeService is IAgregator)
             //    (EmployeeService as IAgregator).RegisterObserver(requestObserver);
 
             if (RequestService is IAgregator)
-                (RequestService as IAgregator).RegisterObserver(this.requestObserver);
+                (RequestService as IAgregator).RegisterObserver(this.requestObserver); //Register observer which listen when coming new request
         }
 
 

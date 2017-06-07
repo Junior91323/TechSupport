@@ -12,17 +12,15 @@ using AutoMapper;
 
 namespace TechSupport.BLL.Services
 {
-    public class EmployeesService : IEmployeesService, IAgregator
+    public class EmployeesService : IEmployeesService
     {
         IUnitOfWork DB { get; set; }
-        List<IObserver> Observers { get; set; }
 
         public EmployeesService(IUnitOfWork uow)
         {
             DB = uow;
-            this.Observers = new List<Interfaces.IObserver>();
         }
-        public void CreateEmployee(EmployeeDTO item)
+        public void Create(EmployeeDTO item)
         {
             try
             {
@@ -32,7 +30,7 @@ namespace TechSupport.BLL.Services
                 Employee employee = DB.Employees.Get(item.Id);
 
                 if (employee != null)
-                    throw new Exception("Employee already exist");
+                    throw new Exception(String.Format("Employee (id:{0}) already exist", item.Id));
 
                 Employee res = new Employee
                 {
@@ -45,42 +43,46 @@ namespace TechSupport.BLL.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
-        public void DeleteEmployee(int id)
+        public void Delete(int id)
         {
             try
             {
+                var res = DB.Employees.Get(id);
+                if (res == null)
+                    throw new Exception(String.Format("Employee (id:{0}) is not found", id));
+
                 DB.Employees.Delete(id);
                 DB.Save();
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
-        public EmployeeDTO GetEmployee(int id)
+        public EmployeeDTO Get(int id)
         {
             try
             {
                 var item = DB.Employees.Get(id);
 
                 if (item == null)
-                    throw new NullReferenceException(String.Format("Item with id: {0} is not found!", id));
+                    throw new NullReferenceException(String.Format("Employee (id:{0}) is not found", id));
 
                 Mapper.Initialize(cfg => { cfg.CreateMap<Employee, EmployeeDTO>(); cfg.CreateMap<Request, RequestDTO>(); });
                 return Mapper.Map<Employee, EmployeeDTO>(item);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
-        public IEnumerable<EmployeeDTO> GetEmployees()
+        public IEnumerable<EmployeeDTO> GetList()
         {
             try
             {
@@ -89,37 +91,13 @@ namespace TechSupport.BLL.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
-        public void NotifyObserver()
-        {
-            try
-            {
-                if (Observers != null)
-                {
-                    foreach (IObserver item in Observers)
-                    {
-                        item.Update(null);
-                    }
-                }
-            }
-            catch (Exception ex) { throw new Exception(ex.Message, ex.InnerException); }
-        }
-
-        public void RegisterObserver(IObserver observer)
+        public void Update(EmployeeDTO item)
         {
             throw new NotImplementedException();
-        }
-
-        public void RemoveObserver(IObserver observer)
-        {
-            throw new NotImplementedException();
-        }
-        public void Dispose()
-        {
-            DB.Dispose();
         }
     }
 }

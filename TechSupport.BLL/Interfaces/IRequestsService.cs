@@ -7,13 +7,10 @@ using TechSupport.BLL.DTO;
 
 namespace TechSupport.BLL.Interfaces
 {
-    public interface IRequestsService
+    public interface IRequestsService:IService<RequestDTO>
     {
-        void Push(RequestDTO item);
-        RequestDTO Get(int id);
         RequestDTO GetFirst();
         RequestDTO GetLast();
-        IEnumerable<RequestDTO> GetList();
-        void Dispose();
+        void Cancel(int id);
     }
 }

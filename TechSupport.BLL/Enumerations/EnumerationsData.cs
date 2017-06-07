@@ -8,9 +8,11 @@ namespace TechSupport.BLL.Enumerations
 {
     public enum RequestStates
     {
+
         Processing = 1,
         New = 2,
-        Completed = 3
+        Completed = 3,
+        Canceled = 5
     }
     public enum EmployeePositions
     {

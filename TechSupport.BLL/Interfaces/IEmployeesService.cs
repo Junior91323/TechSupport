@@ -7,12 +7,7 @@ using TechSupport.BLL.DTO;
 
 namespace TechSupport.BLL.Interfaces
 {
-    public interface IEmployeesService
+    public interface IEmployeesService:IService<EmployeeDTO>
     {
-        void CreateEmployee(EmployeeDTO item);
-        EmployeeDTO GetEmployee(int id);
-        void DeleteEmployee(int id);
-        IEnumerable<EmployeeDTO> GetEmployees();
-        void Dispose();
     }
 }

@@ -35,14 +35,14 @@ namespace TechSupport.BLL.Services
                 var item = DB.Requests.Get(id);
 
                 if (item == null)
-                    throw new NullReferenceException(String.Format("Item with id: {0} is not found!", id));
+                    throw new NullReferenceException(String.Format("Request (id:{0}) is not found", id));
 
                 Mapper.Initialize(cfg => cfg.CreateMap<Request, RequestDTO>());
                 return Mapper.Map<Request, RequestDTO>(item);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -53,14 +53,14 @@ namespace TechSupport.BLL.Services
                 var item = DB.Requests.GetAll().Where(x => x.StateId == (Int32)RequestStates.New).OrderBy(x => x.CreatedDate).FirstOrDefault();
 
                 if (item == null)
-                    throw new NullReferenceException(String.Format("First new request is not found!"));
+                    throw new NullReferenceException(String.Format("First request is not found!"));
 
                 Mapper.Initialize(cfg => cfg.CreateMap<Request, RequestDTO>());
                 return Mapper.Map<Request, RequestDTO>(item);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -71,14 +71,14 @@ namespace TechSupport.BLL.Services
                 var item = DB.Requests.GetAll().Where(x => x.StateId == (Int32)RequestStates.New).OrderByDescending(x => x.CreatedDate).FirstOrDefault();
 
                 if (item == null)
-                    throw new NullReferenceException(String.Format("Last new request is not found!"));
+                    throw new NullReferenceException(String.Format("Last request is not found!"));
 
                 Mapper.Initialize(cfg => cfg.CreateMap<Request, RequestDTO>());
                 return Mapper.Map<Request, RequestDTO>(item);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -91,7 +91,7 @@ namespace TechSupport.BLL.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -107,10 +107,10 @@ namespace TechSupport.BLL.Services
                     }
                 }
             }
-            catch (Exception ex) { throw new Exception(ex.Message, ex.InnerException); }
+            catch (Exception ex) { throw new Exception(ex.Message, ex); }
         }
 
-        public void Push(RequestDTO item)
+        public void Create(RequestDTO item)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace TechSupport.BLL.Services
                 Request request = DB.Requests.Get(item.Id);
 
                 if (request != null)
-                    throw new Exception("Request already exist");
+                    throw new Exception(String.Format("Request (id:{0}) already exist", item.Id));
 
                 Request res = new Request
                 {
@@ -138,7 +138,7 @@ namespace TechSupport.BLL.Services
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message, ex.InnerException);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -156,6 +156,67 @@ namespace TechSupport.BLL.Services
             {
                 if (Observers.Contains(observer))
                     Observers.Remove(observer);
+            }
+        }
+
+        public void Delete(int id)
+        {
+            try
+            {
+                var res = DB.Requests.Get(id);
+                if (res == null)
+                    throw new Exception(String.Format("Request (id:{0}) is not found", id));
+
+                DB.Requests.Delete(id);
+                DB.Save();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public void Update(RequestDTO item)
+        {
+            try
+            {
+                if (item == null)
+                    throw new NullReferenceException("item is null");
+
+                Request request = DB.Requests.Get(item.Id);
+
+                if (request == null)
+                    throw new Exception(String.Format("Request (id:{0}) is not found", item.Id));
+
+                request.Description = item.Description;
+                request.StateId = item.StateId;
+
+                DB.Requests.Update(request);
+                DB.Save();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public void Cancel(int id)
+        {
+            try
+            {
+                var item = DB.Requests.Get(id);
+
+                if (item == null)
+                    throw new Exception(String.Format("Request (id:{0}) is not found", item.Id));
+
+                item.StateId = (Int32)RequestStates.Canceled;
+
+                DB.Requests.Update(item);
+                DB.Save();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
             }
         }
     }

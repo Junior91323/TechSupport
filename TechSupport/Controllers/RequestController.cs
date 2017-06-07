@@ -21,36 +21,39 @@ namespace TechSupport.Controllers
         }
 
         // GET api/values
-        public IEnumerable<string> Get()
+        public IHttpActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            Mapper.Initialize(cfg => cfg.CreateMap<RequestDTO, RequestVM>());
+            var res = Mapper.Map<IEnumerable<RequestDTO>, IEnumerable<RequestVM>>(DB.RequestService.GetList());
+
+            return Ok(res);
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            Mapper.Initialize(cfg => cfg.CreateMap<RequestDTO, RequestVM>());
+            var res = Mapper.Map<RequestDTO, RequestVM>(DB.RequestService.Get(id));
+
+            if (res == null)
+                return NotFound();
+
+            return Ok(res);
         }
 
         // POST api/values
         public IHttpActionResult Post([FromBody]RequestVM item)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
 
-                Mapper.Initialize(cfg => cfg.CreateMap<RequestVM, RequestDTO>());
-                RequestDTO request = Mapper.Map<RequestVM, RequestDTO>(item);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                DB.RequestService.Push(request);
+            Mapper.Initialize(cfg => cfg.CreateMap<RequestVM, RequestDTO>());
+            RequestDTO request = Mapper.Map<RequestVM, RequestDTO>(item);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return InternalServerError(ex);
-            }
+           // DB.RequestService.Create(request);
+
+            return Ok();
 
         }
 
@@ -62,6 +65,7 @@ namespace TechSupport.Controllers
         // DELETE api/values/5
         public void Delete(int id)
         {
+
         }
     }
 }

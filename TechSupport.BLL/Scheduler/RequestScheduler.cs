@@ -108,7 +108,7 @@ namespace TechSupport.BLL.Scheduler
             catch (Exception ex) { }
         }
 
-        void RequestToEmployee(List<Employee> employee, List<Request> requests, EmployeePositions position, int waitingTime)
+        void RequestToEmployee(IList<Employee> employee, IList<Request> requests, EmployeePositions position, int waitingTime)
         {
             List<Request> subRequests = new List<Request>();
 

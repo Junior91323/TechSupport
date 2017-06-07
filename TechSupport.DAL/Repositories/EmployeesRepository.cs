@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TechSupport.DAL.EF;
@@ -32,10 +33,9 @@ namespace TechSupport.DAL.Repositories
                 DB.Employees.Remove(item);
         }
 
-        public IEnumerable<Employee> Find(Func<Employee, bool> predicate)
+        public IQueryable<Employee> Find(Expression<Func<Employee, bool>> predicate)
         {
-            IEnumerable<Employee> items = DB.Employees.Where(predicate);
-            return items;
+            return DB.Employees.Where(predicate);
         }
 
         public Employee Get(int id)
